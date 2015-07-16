@@ -50,7 +50,7 @@ f.close()
 nested_dict_version = parse_version(os.path.join("lib/nested_dict", "__init__.py"))
 
 PACKAGE = {
-    "name": "nested_dict",
+    "name": "nested-dict",
     "version": nested_dict_version,
     "description": "Python dictionary with automatic and arbitrary levels of nestedness",
     "long_description": nested_dict_readme,
@@ -58,8 +58,6 @@ PACKAGE = {
     "author": ['Leo Goodstadt'],
     "author_email": 'nested_dict@llew.org.uk',
     "url": "http://pypi.python.org/pypi/nested_dict",
-    "install_requires": [],
-    "setup_requires": [],
     "keywords": ["nested", "dict", "defaultdict", "dictionary", "auto-vivification"],
     "license": "MIT",
 
