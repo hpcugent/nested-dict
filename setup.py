@@ -9,22 +9,23 @@
 # http://opensource.org/licenses/MIT.
 #
 
-import re
+# Adapted for use at HPC UGent by Andy Georges
+
 import os
-
-# First, we try to use setuptools. If it's not available locally,
-# we fall back on ez_setup.
-try:
-    from setuptools import setup
-except ImportError:
-    from ez_setup import use_setuptools
-    use_setuptools()
-    from setuptools import setup
-
-
+import re
 import sys
+
+import vsc.install.shared_setup as shared_setup
+
+shared_setup.SHARED_TARGET.update({
+    'url': 'https://github.com/bunbun/nested-dict',
+    'download_url': ('',),
+})
+
+
+# originally, had 2.7, but seems to work with 2.6.6 as well
 if not sys.version_info[0:2] >= (2, 6, 6):
-    sys.stderr.write("Requires Python later than 2.7\n")
+    sys.stderr.write("Requires Python later than 2.6.6\n")
     sys.exit(1)
 
 
@@ -46,23 +47,23 @@ def parse_version(module_file):
 f = open(os.path.join(os.path.dirname(__file__), "README.rst"))
 nested_dict_readme = f.read()
 f.close()
-nested_dict_version = parse_version(os.path.join("nested_dict", "__init__.py"))
+nested_dict_version = parse_version(os.path.join("lib/nested_dict", "__init__.py"))
 
-setup(
-    name="nested_dict",
-    version=nested_dict_version,
-    description="Python dictionary with automatic and arbitrary levels of nestedness",
-    long_description=nested_dict_readme,
-    packages=["nested_dict"],
-    author='Leo Goodstadt',
-    author_email='nested_dict@llew.org.uk',
-    url="http://pypi.python.org/pypi/nested_dict",
-    install_requires=[],
-    setup_requires=[],
-    keywords=["nested", "dict", "defaultdict", "dictionary", "auto-vivification"],
-    license="MIT",
+PACKAGE = {
+    "name": "nested_dict",
+    "version": nested_dict_version,
+    "description": "Python dictionary with automatic and arbitrary levels of nestedness",
+    "long_description": nested_dict_readme,
+    "packages": ["nested_dict"],
+    "author": ['Leo Goodstadt'],
+    "author_email": 'nested_dict@llew.org.uk',
+    "url": "http://pypi.python.org/pypi/nested_dict",
+    "install_requires": [],
+    "setup_requires": [],
+    "keywords": ["nested", "dict", "defaultdict", "dictionary", "auto-vivification"],
+    "license": "MIT",
 
-    classifiers=[
+    "classifiers": [
         "Programming Language :: Python",
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.6.6",
@@ -87,7 +88,7 @@ setup(
         "Topic :: Scientific/Engineering",
         "Topic :: Utilities",
     ],
-)
+}
 
 # python setup.py register
 # flake8 *.py tests --exclude=ez_setup.py --max-line-length=100
@@ -95,3 +96,6 @@ setup(
 # make -C docs html
 # git tag -a v1.5.1 -m "Version 1.5.1"
 # python setup.py sdist --format=gztar,zip upload
+
+if __name__ == '__main__':
+    shared_setup.action_target(PACKAGE)
